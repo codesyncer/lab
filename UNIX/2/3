@@ -13,7 +13,7 @@ for((i=0; i<5; ++i)); do
 	((max = !flag || max < in[i] ? in[i] : max))
 	((dict[${in[i]}]+=1))
 done
-echo -e 'Min: ' $min '\nMax: ' $max
+echo -e 'Min:' $min '\nMax:' $max
 for i in ${dict[*]}; do
 	if ((i>=2 && i<=4)); then
 		echo 'Two or three or four values are same.'

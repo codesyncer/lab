@@ -1,0 +1,9 @@
+#!/bin/bash
+echo -n 'Enter file name : '
+read name
+if [ -f $name ]; then
+	echo -e 'USER \tGROUP\tOTHER'
+	echo -e $(cut -c 2-4,5-7,8-10 --output-delimiter=' \t' <<< `ls -l $name`)
+else
+	echo 'Found none or more than one files'
+fi

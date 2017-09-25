@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ $# -lt 1 ]; then
+	echo 'Usage : ./2 name'
+	exit
+fi
+if [ -f $1 ]; then
+	cat $1
+elif [ -d $1 ]; then
+	ls $1
+else
+	echo 'Not a file or directory'
+fi
