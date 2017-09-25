@@ -1,0 +1,22 @@
+#!/bin/bash
+echo -n 'Enter five elements : '
+read -a in
+if [ ${#in[*]} != 5 ]; then
+	echo 'I said 5 elements!'
+	exit
+fi
+declare -A dict
+for((i=0; i<5; ++i)); do
+	flag=${min+1}
+	((min =  !flag || min > in[i] ? in[i] : min))
+	flag=${max+1}
+	((max = !flag || max < in[i] ? in[i] : max))
+	((dict[${in[i]}]+=1))
+done
+echo -e 'Min: ' $min '\nMax: ' $max
+for i in ${dict[*]}; do
+	if ((i>=2 && i<=4)); then
+		echo 'Two or three or four values are same.'
+		break
+	fi
+done
