@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ $# -lt 2 ]; then
+	echo 'Usage : ./3 filename1 filename2'
+	exit
+fi
+if [ -f $1 ] && [ -f $2 ]; then
+	cat >> $2 < $1
+else
+	echo 'found non-file argument'
+fi

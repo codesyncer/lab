@@ -1,10 +1,10 @@
 #!/bin/bash
 ((fc=dc=0))
 for x in `ls`; do 
-	if [[ -f $x ]]; then
+	if [ -f $x ]; then
 		fa[$fc]=$x
 		((fc++))
-	elif [[ -d $x ]]; then
+	elif [ -d $x ]; then
 		da[$dc]=$x
 		((dc++))
 	fi

@@ -1,0 +1,6 @@
+#!/bin/bash
+for rec in `ls`; do
+	if [ -f $rec ] && [ -r $rec ] && [ -w $rec ]; then
+		echo $rec
+	fi
+done
