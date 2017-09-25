@@ -27,8 +27,7 @@ for ((i=0; i<bx; ++i)); do
 done
 declare -A C
 for ((i=0; i<bx; ++i)); do
-	for ((j=0; j<by; ++j)); do
-		x=${A[$i]}
-		echo ${x[$j]}
+	for c in ${A[$i]}; do
+		echo $c
 	done
 done
