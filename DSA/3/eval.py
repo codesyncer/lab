@@ -44,7 +44,7 @@ def eval(ip):
 		return int(val) if val.is_integer() else val
 	return False
 
-val = eval('1 1 -')
+val = eval('8 3 5 7 + x /')
 if 	val is False:
 	print('Error')
 else:

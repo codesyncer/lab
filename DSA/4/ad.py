@@ -66,9 +66,14 @@ def main():
     for word in file:
         dict.insert((word[:-1], ))
     file.close()
-    res = dict.search('cat')
-    res = False if res is None else True
-    print(res)
+    word = input('Enter word : ').split()[0]
+    for i in range(len(word)):
+    	for ch in range(ord('a'), ord('z')):
+    		if chr(ch) == word[i]:
+    			continue
+    		new = word[:i]+chr(ch)+word[i+1:]
+    		if dict.search(new) is not None:
+    			print(new)
 
 if __name__ == '__main__':
     main()

@@ -3,6 +3,7 @@
 read ax ay
 declare -A A
 for ((i=0; i<ax; ++i)); do
+	declare -a x
 	read -a x
 	if ((${#x[*]}!=ay)); then
 		echo 'Input miss match'
@@ -27,7 +28,7 @@ for ((i=0; i<bx; ++i)); do
 done
 declare -A C
 for ((i=0; i<bx; ++i)); do
-	for c in ${A[$i]}; do
+	for c1 in ${A[$i]}; do
 		echo $c
 	done
 done
