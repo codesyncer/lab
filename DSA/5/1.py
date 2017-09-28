@@ -56,6 +56,8 @@ class BinarySearchTree:
 			node = node.parent
 		return node.parent
 
+	def delete(self, node):
+		pass
 
 	def minimum(self):
 		if self.root is None:
@@ -83,7 +85,7 @@ class BinarySearchTree:
 	def maxVal(self):
 		node = self.maximum()
 		return None if node is None else node.value
-			
+	
 	def preorder(self, root = None):
 		TreeNode.preorder(self.root)
 		print()
