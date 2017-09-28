@@ -9,12 +9,12 @@ class MutualFund{
     }
 }
 class myMutualFund extends MutualFund{
-	// class Custom extends Customer{
-	// 	int email;	
-	// }
-	// final void printWarning(){
-	// 	System.out.println("Mutual funds are not subject to market risks.");
-	// }
+	/*class Custom extends Customer{
+		int email;	
+	}
+	final void printWarning(){
+		System.out.println("Mutual funds are not subject to market risks.");
+	}*/
 }
 class p5{
 	public static void main(String args[]){
