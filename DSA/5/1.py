@@ -110,20 +110,6 @@ class BinarySearchTree:
         TreeNode.preorder(self.root)
         print()
 
-    def traverse(self):
-        thislevel = [self.root]
-        while thislevel:
-            nextlevel = list()
-            for n in thislevel:
-                print(n.value, end=' ')
-                if n.left:
-                    nextlevel.append(n.left)
-                if n.right:
-                    nextlevel.append(n.right)
-            print()
-            thislevel = nextlevel
-
-
 bst = BinarySearchTree()
 bst.insert(20)
 bst.insert(10)
