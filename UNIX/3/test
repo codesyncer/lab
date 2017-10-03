@@ -1,0 +1,9 @@
+#!/bin/bash
+select option in One Two Three; do
+	case $option in
+		One) echo 'Onji';;
+		Two) echo 'Erad';;
+		Three) echo 'Mujee' ;;
+		*) exit;;
+	esac
+done
