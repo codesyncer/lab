@@ -1,0 +1,52 @@
+#!/bin/bash
+n=$1
+place=1
+ones=('' one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen)
+tens=('' '' twenty thirty fourty fifty sixty seventy eighty ninety)
+str=''
+if test $n -eq 0; then
+	str=zero
+else
+	while test $n 
+	o=$((n%10))
+	n=$((n/10))
+	t=$((n%10))
+	n=$((n/10))
+	if test $t -le 1; then
+		str="${ones[$((10*t+o))]}"
+	else
+		str="${tens[$t]} ${ones[$o]}"
+	fi
+	if test $n -gt 0; then
+		o=$((n%10))
+		n=$((n/10))
+		t=$((n%10))
+		n=$((n/10))
+		h=$((n%10))
+		n=$((n/10))
+		if test $o -ne 0; then
+			str="${ones[$o]} hundred $str"
+		fi
+		if [ $h -ne 0 ] || [ $t -ne 0 ] ; then
+			if test $h -le 1; then
+				str="${ones[$((10*h+t))]} thousand $str"
+			else
+				str="${tens[$t]} ${ones[$o]} thousand $str"
+			fi
+		fi
+	fi
+	if test $n -gt 0; then
+		o=$((n%10))
+		n=$((n/10))
+		t=$((n%10))
+		n=$((n/10))
+		if test $o -ne 0; then
+			if test $t -le 1; then
+				str="${ones[$((10*t+o))]} lakh $str"
+			else
+				str="${tens[$t]} ${ones[$o]} lakh $str"
+			fi
+		fi
+	fi
+fi
+echo $str
