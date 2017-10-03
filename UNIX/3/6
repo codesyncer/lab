@@ -1,34 +1,29 @@
 #!/bin/bash
-# echo -n 'Enter dimensions of matA : '
+echo -n 'Enter dimensions of matA : '
 read ax ay
 declare -A A
 for ((i=0; i<ax; ++i)); do
-	declare -a x
-	read -a x
-	if ((${#x[*]}!=ay)); then
-		echo 'Input miss match'
-		exit
-	fi
-	A[$i]=${x[*]}
+	read -a arr
+	for ((j=0; j<ay; ++j)); do
+		A[$i,$j]=${arr[$j]}
+	done
 done
-# echo -n 'Enter dimensions of matB : '
+echo -n 'Enter dimensions of matB : '
 read bx by
 if [ $ax -ne $bx ] || [ $ay -ne $by ]; then
 	echo 'Cannot add mats'
 	exit
 fi
-declare -A B
 for ((i=0; i<bx; ++i)); do
-	read -a x
-	if ((${#x[*]}!=by)); then
-		echo 'Input miss match'
-		exit
-	fi
-	B[$i]=${x[*]}
-done
-declare -A C
-for ((i=0; i<bx; ++i)); do
-	for c1 in ${A[$i]}; do
-		echo $c
+	read -a arr
+	for ((j=0; j<by; ++j)); do
+		((A[$i,$j] += arr[j]))
 	done
+done
+echo -e '\nSum\n'
+for ((i=0; i<bx; ++i)); do
+	for ((j=0; j<by; ++j)); do
+		printf "%-5d" ${A[$i,$j]}
+	done
+	echo
 done
