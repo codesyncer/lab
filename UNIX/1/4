@@ -1,7 +1,6 @@
 #!/bin/bash
-if test $# -lt 1
-then
-    echo "More args"
+if test $# -lt 1; then
+    echo "Usage: $0 num"
     exit
 fi
 echo "Sum =" $((($1*($1+1)/2)))

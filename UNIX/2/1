@@ -1,15 +1,14 @@
 #!/bin/bash
 if (( $# < 2 )); then
-    echo -e 'Usage: ./1 x y\nx and y are +ve'
+    echo -e "Usage: $0 x y\nx and y are +ve"
     exit
 fi
 x=$1
 y=$2
-while (( $x <= 0 || $y <= 0)); do
+while (( x <= 0 || y <= 0)); do
     echo 'Enter positive numbers : '
     read x y
 done
-((small = $x<$y ? $x : $y))
-((big = $x<$y ? $y : $x))
-((x=$x))
+((small = x<y ? x : y))
+((big = x<y ? y : x))
 echo `bc <<< "scale=2; $small / $big"`
