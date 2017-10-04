@@ -1,6 +1,6 @@
 #!/bin/bash
 if test $# -lt 1; then
-	echo 'Usage: ./7 string'
+	echo "Usage: $0 string"
 	exit
 fi
 str=$1

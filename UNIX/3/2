@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ $# -lt 1 ]; then
-	echo 'Usage : ./2 name'
+	echo "Usage : $0 name"
 	exit
 fi
 if [ -f $1 ]; then

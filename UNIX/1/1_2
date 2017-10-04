@@ -1,7 +1,6 @@
 #!/bin/bash
-if test $# -lt 1
-then
-	echo "Enter radius in cm"
+if test $# -lt 1; then
+	echo "Usage: $0 radius(cm)"
 	exit
 fi
 echo "Area in cmsq :" $(bc<<<"3.14159 * $1 * $1") 
