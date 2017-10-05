@@ -3,7 +3,6 @@ class MutualFund{
 		int aadhar;
 	}
 	Customer customer;
-	class 
     final void printWarning(){
 		System.out.println("Mutual funds are subject to market risks.\nRead all scheme related docs carefully.");
     }
