@@ -7,7 +7,6 @@ str=''
 if test $n -eq 0; then
 	str=zero
 else
-	while test $n 
 	o=$((n%10))
 	n=$((n/10))
 	t=$((n%10))
@@ -31,7 +30,7 @@ else
 			if test $h -le 1; then
 				str="${ones[$((10*h+t))]} thousand $str"
 			else
-				str="${tens[$t]} ${ones[$o]} thousand $str"
+				str="${tens[$h]} ${ones[$t]} thousand $str"
 			fi
 		fi
 	fi
