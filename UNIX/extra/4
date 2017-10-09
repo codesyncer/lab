@@ -1,0 +1,10 @@
+#!/bin/bash
+n=$1
+for ((i=1; i<=n; ++i)); do
+	for ((j=1; j<=2*i-1; ++j)); do
+		((x=4*i-2))
+		((y=j+i-1))
+		echo -n "$((y < x-y ? y : x-y)) "
+	done
+	echo
+done
