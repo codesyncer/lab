@@ -1,22 +1,28 @@
-import random
 class TreeNode:
-    def __init__(self, value=None, parent=None, left=None, right=None, height=None):
+    def __init__(self, value=None, parent=None, left=None, right=None):
         self.parent = parent
         self.value = value
         self.left = left
         self.right = right
-        self.h = height
+        self.h = 1
 
-    def preorder(root):
+    @staticmethod
+    def pre_order(root):
         if root is None:
             return
         print(root.value, end=' ')
-        TreeNode.preorder(root.left)
-        TreeNode.preorder(root.right)
+        TreeNode.pre_order(root.left)
+        TreeNode.pre_order(root.right)
 
     @staticmethod
     def h(node):
         return 0 if node is None else node.h
+
+    def re_calc_height(self):
+        hl = 0 if self.left is None else self.left.h
+        hr = 0 if self.right is None else self.right.h
+        self.h = max(hl, hr) + 1
+
 
 class AVLTree:
     def __init__(self, root=None):
@@ -39,13 +45,15 @@ class AVLTree:
             parent.right = node
         x = node
         y = x.parent
-        # y.h = max(y.h, x.h+1)
         if y is None:
             return
+        y.re_calc_height()
         z = y.parent
-        # z.h = max(z.h, y.h+1)
-        # ToDo continue O(1) height
-        while z is not None and abs(self.h(z.left) - self.h(z.right)) <= 1:
+        while z is not None and abs(TreeNode.h(z.left) - TreeNode.h(z.right)) <= 1:
+            org_zh = z.h
+            z.re_calc_height()
+            if org_zh == z.h:
+                return
             x = x.parent
             y = y.parent
             z = z.parent
@@ -68,6 +76,9 @@ class AVLTree:
             y.parent = z.parent
             z.parent = y
             y.right = z
+            z.re_calc_height()
+            x.re_calc_height()
+            y.re_calc_height()
             sub_tree_root = y
         elif z.right == y and y.right == x:
             z.right = y.left
@@ -76,6 +87,9 @@ class AVLTree:
             y.parent = z.parent
             z.parent = y
             y.left = z
+            x.re_calc_height()
+            z.re_calc_height()
+            y.re_calc_height()
             sub_tree_root = y
         elif z.left == y and y.right == x:
             y.right = x.left
@@ -85,6 +99,9 @@ class AVLTree:
             y.parent = x
             x.parent = z
             z.left = x
+            y.re_calc_height()
+            x.re_calc_height()
+            z.re_calc_height()
             sub_tree_root = self.rotate(y, x, z)
         else:
             y.left = x.right
@@ -94,17 +111,20 @@ class AVLTree:
             y.parent = x
             x.parent = z
             z.right = x
+            y.re_calc_height()
+            x.re_calc_height()
+            z.re_calc_height()
             sub_tree_root = self.rotate(y, x, z)
         return sub_tree_root
 
-    def h(self, node):
-        if node is None:
-            return 0
-        if node.left is None and node.right is None:
-            return 1
-        hl = 0 if node.left is None else self.h(node.left)
-        hr = 0 if node.right is None else self.h(node.right)
-        return 1 + max(hl, hr)
+    # def h(self, node):
+    #     if node is None:
+    #         return 0
+    #     if node.left is None and node.right is None:
+    #         return 1
+    #     hl = 0 if node.left is None else self.h(node.left)
+    #     hr = 0 if node.right is None else self.h(node.right)
+    #     return 1 + max(hl, hr)
 
     def search(self, value):
         trav = self.root
@@ -133,20 +153,48 @@ class AVLTree:
     def delete(self, node):
         if node is None:
             return
-        if node.left is None or node.right is None:
+        if node.left is None and node.right is None:
+            if node == self.root:
+                self.root = None
+                return
+            if node == node.parent.left:
+                node.parent.left = None
+            else:
+                node.parent.right = None
+            z = node.parent
+            y = None
+            while True:
+                while z is not None and abs(TreeNode.h(z.left) - TreeNode.h(z.right)) <= 1:
+                    org_zh = z.h
+                    z.re_calc_height()
+                    if org_zh == z.h:
+                        return
+                    y = z
+                    z = z.parent
+                if z is None:
+                    return
+                z.re_calc_height()
+                y = z.left if y == z.right else z.right
+                y = z.left if TreeNode.h(z.left) > TreeNode.h(z.right) else z.right
+                x = y.left if TreeNode.h(y.left) > TreeNode.h(y.right) else y.right
+                sub_tree_root = self.rotate(x, y, z)
+                if sub_tree_root.parent is None:
+                    self.root = sub_tree_root
+                else:
+                    if sub_tree_root.value <= sub_tree_root.parent.value:
+                        sub_tree_root.parent.left = sub_tree_root
+                    else:
+                        sub_tree_root.parent.right = sub_tree_root
+                z = sub_tree_root.parent
+
+        elif node.left is None or node.right is None:
             if node == self.root:
                 self.root = node.right if node.left is None else node.left
-                if self.root is not None:
-                    self.root.parent = None
+                self.root.parent = None
             else:
-                if node.parent.left == node:
-                    node.parent.left = node.right if node.left is None else node.left
-                else:
-                    node.parent.right = node.right if node.left is None else node.left
-                if node.left is not None:
-                    node.left.parent = node.parent
-                if node.right is not None:
-                    node.right.parent = node.parent
+                child = node.left if node.right is None else node.right
+                node.value = child.value
+                self.delete(child)
         else:
             pred = self.predecessor(node)
             node.value = pred.value
@@ -179,21 +227,36 @@ class AVLTree:
         node = self.maximum()
         return None if node is None else node.value
 
-    def preorder(self, root=None):
-        TreeNode.preorder(self.root)
+    def pre_order(self):
+        TreeNode.pre_order(self.root)
         print()
 
 
-bst = AVLTree()
-l = []
-for i in range(1000):
-    x = random.randint(0, 1000000)
-    if x not in l:
-        l.append(x)
-        bst.insert(l[-1])
-for i in l:
-    if bst.search(i) is None:
+avlt = AVLTree()
+test_data = open('avg.dat', 'r')
+for line in test_data:
+    avlt.insert(int(line))
+test_data.close()
+
+test_data = open('avg.dat', 'r')
+for line in test_data:
+    if avlt.search(int(line)) is None:
         print(':(')
         break
 else:
     print('Done')
+test_data.close()
+test_data = open('avg.dat', 'r')
+for line in test_data:
+    node = avlt.search(int(line))
+    if node is None:
+        print(':(')
+        print(line)
+        break
+    else:
+        avlt.delete(node)
+else:
+    print('Done')
+test_data.close()
+# print(avlt.h(avlt.root))
+print(avlt.root.h)
