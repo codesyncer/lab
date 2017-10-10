@@ -1,3 +1,6 @@
+from random import randint
+
+
 class TreeNode:
     def __init__(self, value=None, parent=None, left=None, right=None):
         self.parent = parent
@@ -77,7 +80,8 @@ class AVLTree:
             z.parent = y
             y.right = z
             z.re_calc_height()
-            x.re_calc_height()
+            if x is not None:
+                x.re_calc_height()
             y.re_calc_height()
             sub_tree_root = y
         elif z.right == y and y.right == x:
@@ -87,7 +91,8 @@ class AVLTree:
             y.parent = z.parent
             z.parent = y
             y.left = z
-            x.re_calc_height()
+            if x is not None:
+                x.re_calc_height()
             z.re_calc_height()
             y.re_calc_height()
             sub_tree_root = y
@@ -175,7 +180,7 @@ class AVLTree:
                     return
                 z.re_calc_height()
                 y = z.left if y == z.right else z.right
-                y = z.left if TreeNode.h(z.left) > TreeNode.h(z.right) else z.right
+                # y = z.left if TreeNode.h(z.left) > TreeNode.h(z.right) else z.right
                 x = y.left if TreeNode.h(y.left) > TreeNode.h(y.right) else y.right
                 sub_tree_root = self.rotate(x, y, z)
                 if sub_tree_root.parent is None:
@@ -233,30 +238,50 @@ class AVLTree:
 
 
 avlt = AVLTree()
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    avlt.insert(int(line))
-test_data.close()
+l = []
+for i in range(10):
+    x = randint(0, 1000)
+    if x not in l:
+        l.append(x)
+        avlt.insert(x)
+print(l)
+print(avlt.minVal())
+print(avlt.maxVal())
+print(avlt.predecessor(avlt.search(l[0])).value)
+print(avlt.successor(avlt.search(l[0])).value)
 
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    if avlt.search(int(line)) is None:
-        print(':(')
-        break
-else:
-    print('Done')
-test_data.close()
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    node = avlt.search(int(line))
-    if node is None:
-        print(':(')
-        print(line)
-        break
-    else:
-        avlt.delete(node)
-else:
-    print('Done')
-test_data.close()
-# print(avlt.h(avlt.root))
-print(avlt.root.h)
+# for x in l:
+#     if avlt.search(x) is None:
+#         print(':(')
+#     else:
+#         avlt.delete(avlt.search(x))
+
+# avlt = AVLTree()
+# test_data = open('small.dat', 'r')
+# for line in test_data:
+#     avlt.insert(int(line))
+# test_data.close()
+# print(avlt.root.h)
+# test_data = open('small.dat', 'r')
+# for line in test_data:
+#     if avlt.search(int(line)) is None:
+#         print(':(')
+#         break
+# else:
+#     print('Done')
+# test_data.close()
+# test_data = open('small.dat', 'r')
+# for line in test_data:
+#     node = avlt.search(int(line))
+#     if node is None:
+#         print(':(')
+#         print(line)
+#         break
+#     else:
+#         avlt.delete(node)
+# else:
+#     print('Done')
+# test_data.close()
+# # print(avlt.h(avlt.root))
+# # print(avlt.root.h)
+# #
