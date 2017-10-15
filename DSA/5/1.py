@@ -110,27 +110,51 @@ class BinarySearchTree:
         TreeNode.preorder(self.root)
         print()
 
+    def h(self, node):
+        if node is None:
+            return 0
+        if node.left is None and node.right is None:
+            return 1
+        hl = 0 if node.left is None else self.h(node.left)
+        hr = 0 if node.right is None else self.h(node.right)
+        return 1 + max(hl, hr)
+
 bst = BinarySearchTree()
-bst.insert(20)
-bst.insert(10)
-bst.insert(5)
-bst.insert(1)
-bst.insert(7)
-bst.insert(15)
-bst.insert(30)
-bst.insert(25)
-bst.insert(21)
-bst.insert(35)
-bst.insert(32)
-bst.insert(40)
-for i in range(45):
-    node = bst.search(i)
-    if node is not None:
-        p = bst.predecessor(node)
-        s = bst.successor(node)
-        st = 'x' if p is None else str(p.value)
-        st += ' <= '
-        st += str(node.value)
-        st += ' <= '
-        st += 'x' if s is None else str(s.value)
-        print(st)
+# bst.insert(20)
+# bst.insert(10)
+# bst.insert(5)
+# bst.insert(1)
+# bst.insert(7)
+# bst.insert(15)
+# bst.insert(30)
+# bst.insert(25)
+# bst.insert(21)
+# bst.insert(35)
+# bst.insert(32)
+# bst.insert(40)
+# for i in range(45):
+#     node = bst.search(i)
+#     if node is not None:
+#         p = bst.predecessor(node)
+#         s = bst.successor(node)
+#         st = 'x' if p is None else str(p.value)
+#         st += ' <= '
+#         st += str(node.value)
+#         st += ' <= '
+#         st += 'x' if s is None else str(s.value)
+#         print(st)
+
+test_data = open('worst.dat', 'r')
+for line in test_data:
+    bst.insert(int(line))
+test_data.close()
+
+test_data = open('worst.dat', 'r')
+for line in test_data:
+    if bst.search(int(line)) is None:
+        print(':(')
+        break
+else:
+    print('Done')
+test_data.close()
+print(bst.h(bst.root))
