@@ -13,15 +13,6 @@ class BinaryTree:
     def __init__(self, root=None):
         self.root = root
 
-    def search(self, value, root):
-        if root is None:
-            return None
-        if root.value == value:
-            return root
-        left_search = self.search(value, root.left)
-        right_search = self.search(value, root.right)
-        return left_search if right_search is None else left_search
-
     @staticmethod
     def check_node(node):
         if node is None:
