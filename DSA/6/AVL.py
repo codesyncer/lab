@@ -238,11 +238,10 @@ else:
 test_data.close()
 test_data = open('as.dat', 'r')
 for line in test_data:
-    if line == '7917901733\n':
-        tree.print()
     node = tree.search(int(line))
     if node is None:
         print(':(')
+        print(line)
         break
     else:
         tree.delete(node)
