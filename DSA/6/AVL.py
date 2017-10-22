@@ -193,8 +193,10 @@ class AVLTree:
                 if z is None:
                     return
                 z.re_calc_height()
-                # y = z.left if y == z.right else z.right
                 y = z.left if TreeNode.height(z.left) > TreeNode.height(z.right) else z.right
+                # y = z.left if y == z.right else z.right
+                # if y is None:
+                #     return
                 x = y.left if TreeNode.height(y.left) > TreeNode.height(y.right) else y.right
                 if z.left == y and y.left == x:
                     self.rotate_right(y, z)
@@ -212,7 +214,6 @@ class AVLTree:
                     self.rotate_left(x, z)
                     z = x.parent
                     y = x
-                break
         else:
             if node.left is None or node.right is None:
                 leaf = node.left if node.right is None else node.right
@@ -242,6 +243,7 @@ for line in test_data:
     if node is None:
         print(':(')
         print(line)
+        # tree.print()
         break
     else:
         tree.delete(node)
