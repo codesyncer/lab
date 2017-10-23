@@ -1,0 +1,38 @@
+#!/bin/bash
+select option in Add Delete	Search Exit; do
+	case $option in 
+		Add)
+			echo -n "Roll : "; read roll
+			echo -n "Name : "; read name
+			echo -n "Sem : "; read sem
+			echo -n "UNIX : "; read UNIX
+			echo -n "DSA : "; read DSA
+			echo -n "POP : "; read POP
+			echo "$roll|$name|$sem|$UNIX|$DSA|$POP" >> db
+			;;
+		Delete)
+			echo -n "Enter keyword : "
+			read keyword
+			sed -n "/$keyword/Ip" db
+			echo -n "Delete following records? (y/n): "
+			read confirm
+			if [[ "$confirm" != 'y' ]]; then
+				continue
+			fi
+			sed "/$keyword/Id" db > tmpdb
+			cat tmpdb > db
+			rm tmpdb
+			echo "Deleted"
+			;;
+		Search)
+			echo -n "Enter keyword : "
+			read keyword
+			sed -n "/$keyword/Ip" db
+			;;
+		Exit)
+			break
+			;;
+		*)
+			echo "Invalid option"
+	esac
+done

@@ -1,0 +1,3 @@
+#!/bin/bash
+echo 'Files are: '
+ls 4aTestFiles -l | grep -i "^-" | grep -io " [aieou][^ ]*$"

@@ -1,0 +1,16 @@
+#!/bin/bash
+> address.lst
+echo 'Enter records: (Hit return to exit)'
+while true; do
+	echo -en "\nEnter name: "
+	read name
+	if test ${#name} -eq 0; then
+		break
+	fi
+	echo -n "Enter $name's address: "
+	read address
+	if test ${#address} -eq 0; then
+		break
+	fi
+	echo "$name|$address" >> address.lst
+done

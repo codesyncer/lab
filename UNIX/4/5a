@@ -1,0 +1,6 @@
+#!/bin/bash
+# ToDo combine seds
+sed '1i\<html>\' c.txt > 5atmp
+sed '$a\</html>\' 5atmp > 5atmp1
+cat 5atmp1 > c.txt
+rm 5atmp 5atmp1
