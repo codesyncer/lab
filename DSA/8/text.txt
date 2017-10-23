@@ -1,0 +1,4 @@
+Use the implementation in problem 1 to write a program that will read in a text file and
+pre­process the text by building a trie. Your program should then allow users to search for
+all occurrences of a word in the text. You will need to print the all the locations (the
+indices) where the searched word appeared in the text.
