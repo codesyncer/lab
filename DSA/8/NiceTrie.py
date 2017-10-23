@@ -39,6 +39,7 @@ class Node:
     def __init__(self, character=None):
         self.ch = character
         self.children = None
+        self.indices = None
 
     def __lt__(self, other):
         return ord(self.ch) < ord(other.ch)
@@ -51,18 +52,23 @@ class NiceTrie:
     def __init__(self):
         self.root = Node()
 
-    def insert(self, string):
+    def insert(self, string, end_word_position=None):
         node = self.root
         for ch in string:
+            result = None
             if node.children is None:
                 node.children = MyList()
-            result = node.children.search(ch)
-            if result is None:
-                node = node.children.ordered_insert(Node(ch)).value
             else:
-                node = result.value
+                result = node.children.search(ch)
+            if result is None:
+                result = node.children.ordered_insert(Node(ch))
+            node = result.value
+        if end_word_position is not None:
+            if node.indices is None:
+                node.indices = []
+            node.indices.append((end_word_position[0], end_word_position[1]))
 
-    def search(self, string):
+    def present(self, string):
         node = self.root
         for ch in string:
             if node.children is None:
@@ -72,3 +78,18 @@ class NiceTrie:
                 return False
             node = list_node.value
         return node.children is None
+
+    def search(self, string):
+        node = self.root
+        for ch in string:
+            if node.children is None:
+                return []
+            list_node = node.children.search(ch)
+            if list_node is None:
+                return []
+            node = list_node.value
+        indices = []
+        if node.indices is not None:
+            for pos in node.indices:
+                indices.append((pos[0], pos[1] - (len(string) - 1)))
+        return indices
