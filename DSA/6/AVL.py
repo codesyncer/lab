@@ -52,22 +52,22 @@ class AVLTree:
         if z is None:
             return
         if z.left == y and y.left == x:
-            self.rotate_right(y, z)
+            self.rotate_right(z)
         elif z.left == y and y.right == x:
-            self.rotate_left(x, y)
-            self.rotate_right(x, z)
+            self.rotate_left(y)
+            self.rotate_right(z)
         elif z.right == y and y.right == x:
-            self.rotate_left(y, z)
+            self.rotate_left(z)
         else:
-            self.rotate_right(x, y)
-            self.rotate_left(x, z)
+            self.rotate_right(y)
+            self.rotate_left(z)
 
     @staticmethod
     def is_balanced(node):
         return True if abs(TreeNode.height(node.left) - TreeNode.height(node.right)) <= 1 else False
 
-    # Lower, Upper
-    def rotate_right(self, y, z):
+    def rotate_right(self, z):
+        y = z.left
         z.left = y.right
         if y.right is not None:
             y.right.parent = z
@@ -84,23 +84,23 @@ class AVLTree:
         z.re_calc_height()
         y.re_calc_height()
 
-    # Lower, Upper
-    def rotate_left(self, x, y):
-        y.right = x.left
-        if x.left is not None:
-            x.left.parent = y
-        x.left = y
-        x.parent = y.parent
-        y.parent = x
-        if x.parent is not None:
-            if x.value <= x.parent.value:
-                x.parent.left = x
+    def rotate_left(self, z):
+        y = z.right
+        z.right = y.left
+        if y.left is not None:
+            y.left.parent = z
+        y.left = z
+        y.parent = z.parent
+        z.parent = y
+        if y.parent is not None:
+            if y.value <= y.parent.value:
+                y.parent.left = y
             else:
-                x.parent.right = x
+                y.parent.right = y
         else:
-            self.root = x
+            self.root = y
+        z.re_calc_height()
         y.re_calc_height()
-        x.re_calc_height()
 
     def h(self, node):
         if node is None:
@@ -169,6 +169,11 @@ class AVLTree:
             tmp = tmp.right
         return tmp
 
+    def max(self, node):
+        while node.right is not None:
+            node = node.right
+        return node
+
     def delete(self, node):
         if node is None:
             return
@@ -199,26 +204,27 @@ class AVLTree:
                 #     return
                 x = y.left if TreeNode.height(y.left) > TreeNode.height(y.right) else y.right
                 if z.left == y and y.left == x:
-                    self.rotate_right(y, z)
-                    z = y.parent
+                    self.rotate_right(z)
+                    z = z.parent.parent
                 elif z.left == y and y.right == x:
-                    self.rotate_left(x, y)
-                    self.rotate_right(x, z)
-                    z = x.parent
-                    y = x
+                    self.rotate_left(y)
+                    self.rotate_right(z)
+                    y = z.parent
+                    z = z.parent.parent
                 elif z.right == y and y.right == x:
-                    self.rotate_left(y, z)
-                    z = y.parent
+                    self.rotate_left(z)
+                    z = z.parent.parent
                 else:
-                    self.rotate_right(x, y)
-                    self.rotate_left(x, z)
-                    z = x.parent
-                    y = x
+                    self.rotate_right(y)
+                    self.rotate_left(z)
+                    y = z.parent
+                    z = z.parent.parent
         else:
+            leaf = None
             if node.left is None or node.right is None:
                 leaf = node.left if node.right is None else node.right
             else:
-                leaf = self.predecessor(node)
+                leaf = self.max(node.left)
             node.value = leaf.value
             self.delete(leaf)
 
