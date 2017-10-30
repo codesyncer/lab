@@ -1,7 +1,7 @@
 from Trie import *
 
 my_list = ['bear', 'bell', 'sell', 'bid', 'hello', 'bull', 'stopping', 'buy', 'stock', 'stop', 'meow', 'stopper']
-throws = ['beer', 'pong', 'srinag', 'sold', 'stop', 'stopper', 'stopping', 'skitty']
+throws = ['beer', 'pong', 'srinag', 'sold', 'skitty']
 my_trie = Trie()
 for word in my_list:
     my_trie.insert(word)
