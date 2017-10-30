@@ -1,0 +1,13 @@
+#!/bin/bash
+i=0
+while true; do
+	echo -ne "$i\b"
+	((i+=1))
+	((i%=10))
+	sleep 0.5
+done &
+pid=$!
+echo -n "Process($pid) : "
+# read x
+# kill $pid
+wait

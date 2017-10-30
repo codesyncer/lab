@@ -1,0 +1,7 @@
+#!/bin/bash
+before=`ps | wc -l`
+sort -n num.dat > sorted.dat &
+ps
+after=`ps | wc -l`
+echo $((after-before))
+wait
