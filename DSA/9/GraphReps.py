@@ -41,6 +41,7 @@ class Vertex:
         self.label = label
         self.distance = distance
         self.visited = False
+        self.pred = None
 
     def brief(self):
         return self.label, self.distance
@@ -48,7 +49,7 @@ class Vertex:
     def visit(self, from_node=None):
         self.distance = 0 if from_node is None else from_node.distance + 1
         self.visited = True
-
+        self.pred = from_node
 
 def my_bfs(graph, source):
     node_list = [Vertex(i) for i in range(len(graph))]
