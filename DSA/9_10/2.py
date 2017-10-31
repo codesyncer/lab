@@ -1,10 +1,10 @@
-from GraphReps import *
+from Graph import *
 
 
 def main():
-    graph = adjacency_list(*input_graph())
+    graph = Graph(*Graph.input_graph())
     source = int(input('Enter source vertex: '))
-    print(my_bfs(graph, source))
+    print(graph.connected_bfs(source))
 
 
 if __name__ == '__main__':

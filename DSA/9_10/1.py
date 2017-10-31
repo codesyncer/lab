@@ -1,12 +1,12 @@
-from GraphReps import *
+from Graph import *
 
 
 def main():
-    n, edges = input_graph()
+    graph = Graph(*Graph.input_graph())
     print('The adjacency matrix is')
-    print_matrix(adjacency_mat(n, edges))
+    print_matrix(graph.get_adjacency_mat())
     print('\nThe adjacency list is')
-    print_vertex_list(adjacency_list(n, edges))
+    print_vertex_list(graph.get_adjacency_list())
 
 
 def print_matrix(mat):
