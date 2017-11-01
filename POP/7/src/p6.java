@@ -1,5 +1,3 @@
-package es.hol.srinag;
-
 import java.util.Scanner;
 
 class myException extends Exception {

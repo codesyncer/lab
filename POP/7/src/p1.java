@@ -1,5 +1,3 @@
-package es.hol.srinag;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;

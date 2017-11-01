@@ -1,5 +1,3 @@
-package es.hol.srinag;
-
 interface Stack {
     class StackException extends Exception {
         StackException(String msg) {
