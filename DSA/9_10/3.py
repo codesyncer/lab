@@ -3,9 +3,11 @@ from Graph import *
 
 def main():
     graph = Graph(*Graph.input_graph())
-    components = graph.get_components()
-    print_matrix(components)
-    print(len(components))
+    graph.make_adjacency_list()
+    components_list, component_markers = graph.get_components()
+    for component in components_list:
+        for vertex in component:
+            print(str(vertex.label) + ' belongs to component ' + str(component_markers[vertex.label]))
 
 
 def print_matrix(mat):

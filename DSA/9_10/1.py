@@ -3,10 +3,12 @@ from Graph import *
 
 def main():
     graph = Graph(*Graph.input_graph())
+    graph.make_adjacency_list()
+    graph.make_adjacency_mat()
     print('The adjacency matrix is')
-    print_matrix(graph.get_adjacency_mat())
+    print_matrix(graph.adjacency_mat)
     print('\nThe adjacency list is')
-    print_vertex_list(graph.get_adjacency_list())
+    print_vertex_list(graph.adjacency_list)
 
 
 def print_matrix(mat):
