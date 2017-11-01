@@ -10,7 +10,7 @@ class TreeNode:
     def height(node):
         return 0 if node is None else node.h
 
-    def re_calc_height(self):
+    def refresh_height(self):
         old_height = self.h
         hl = 0 if self.left is None else self.left.h
         hr = 0 if self.right is None else self.right.h
@@ -43,12 +43,13 @@ class AVLTree:
         x = None
         y = node
         z = node.parent
+        z.refresh_height()
         while z is not None and AVLTree.is_balanced(z):
-            if not z.re_calc_height():
-                return
             x = y
             y = z
             z = z.parent
+            if z is not None:
+                z.refresh_height()
         if z is None:
             return
         self.balance(z, y, x)
@@ -82,14 +83,14 @@ class AVLTree:
         y.right = z
         y.parent = z.parent
         z.parent = y
-        z.re_calc_height()
-        y.re_calc_height()
+        z.refresh_height()
+        y.refresh_height()
         if y.parent is not None:
             if z == y.parent.left:
                 y.parent.left = y
             else:
                 y.parent.right = y
-            y.parent.re_calc_height()
+            y.parent.refresh_height()
         else:
             self.root = y
         return y
@@ -102,14 +103,14 @@ class AVLTree:
         y.left = z
         y.parent = z.parent
         z.parent = y
-        z.re_calc_height()
-        y.re_calc_height()
+        z.refresh_height()
+        y.refresh_height()
         if y.parent is not None:
             if z == y.parent.left:
                 y.parent.left = y
             else:
                 y.parent.right = y
-            y.parent.re_calc_height()
+            y.parent.refresh_height()
         else:
             self.root = y
         return y
@@ -190,7 +191,6 @@ class AVLTree:
     def delete(self, node):
         if node is None:
             return
-
         if node.is_leaf():
             if node.parent is None:
                 self.root = None
@@ -200,16 +200,16 @@ class AVLTree:
             else:
                 node.parent.right = None
             z = node.parent
-            while True:
+            while z is not None:
+                z.refresh_height()
                 while z is not None and AVLTree.is_balanced(z):
-                    if not z.re_calc_height():
-                        return
                     z = z.parent
+                    if z is not None:
+                        z.refresh_height()
                 if z is None:
                     return
-                z.re_calc_height()
-                y = z.left if TreeNode.height(z.left) > TreeNode.height(z.right) else z.right
-                x = y.left if TreeNode.height(y.left) > TreeNode.height(y.right) else y.right
+                y = z.left if TreeNode.height(z.left) >= TreeNode.height(z.right) else z.right
+                x = y.left if TreeNode.height(y.left) >= TreeNode.height(y.right) else y.right
                 z = self.balance(z, y, x).parent
         else:
             if node.left is None or node.right is None:
