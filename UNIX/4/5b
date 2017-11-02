@@ -1,0 +1,3 @@
+#!/bin/bash
+sed '1,3s/|/:/g' c.txt > 5atmp
+mv 5atmp c.txt
