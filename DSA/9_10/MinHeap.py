@@ -15,6 +15,8 @@ class MinHeap:
 
     def swap(self, index1, index2):
         self.arr[index1], self.arr[index2] = self.arr[index2], self.arr[index1]
+        self.arr[index1].index = index1
+        self.arr[index2].index = index2
 
     def heapify(self, index):
         li = self.left_index(index)
@@ -32,6 +34,7 @@ class MinHeap:
     def insert(self, key):
         index = len(self.arr)
         self.arr.append(key)
+        key.index = index
         parent_index = self.parent_index(index)
         while parent_index is not None and self.arr[parent_index] > self.arr[index]:
             self.swap(parent_index, index)
@@ -48,6 +51,7 @@ class MinHeap:
             return None
         max_value = self.arr[0]
         self.arr[0] = self.arr[-1]
+        self.arr[0].index = 0
         self.arr.pop()
         self.heapify(0)
         return max_value
@@ -57,6 +61,8 @@ class MinHeap:
 
     def build_heap(self, in_list):
         self.arr = in_list
+        for i in range(len(self.arr)):
+            self.arr[i].index = i
         if self.last_index() <= 0:
             return
         for i in range(self.parent_index(self.last_index()), -1, -1):
@@ -65,5 +71,9 @@ class MinHeap:
     def empty(self):
         return self.arr is None or len(self.arr) == 0
 
-    def update_priority(self):
-        pass
+    def update_priority(self, index):
+        parent_index = self.parent_index(index)
+        while parent_index is not None and self.arr[parent_index] > self.arr[index]:
+            self.swap(parent_index, index)
+            index = parent_index
+            parent_index = self.parent_index(index)

@@ -1,2 +1,3 @@
 #!/bin/bash
-ps -u
+ps -u $USER
+echo 'Terminal pid : ' $PPID

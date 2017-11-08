@@ -7,6 +7,7 @@ class Graph:
             self.label = label
             self.distance = distance
             self.predecessor = None
+            self.index = None
 
         def __lt__(self, other):
             return self.distance < other.distance
@@ -78,4 +79,5 @@ class Graph:
                 if v.distance == self.inf or w.distance + dwv < v.distance:
                     v.distance = w.distance + dwv
                     v.predecessor = w
-            priority_queue.build_heap(priority_queue.arr)
+                    priority_queue.update_priority(v.index)
+            # priority_queue.build_heap(priority_queue.arr)

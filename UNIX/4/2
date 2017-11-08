@@ -1,11 +1,15 @@
 #!/bin/bash
-str=`cut -d ':' -f 1,2 <<< \`date +'%T'\``
+if test $# -lt 1; then
+	str=`cut -d ':' -f 1,2 <<< \`date +'%T'\``
+else
+	str=$1
+fi
 if [[ $str < '12:00' ]]; then
 	echo 'Good Morning'
 elif [[ $str < '18:00' ]]; then
 	echo 'Good Afternoon'
 elif [[ $str < '20:00' ]]; then
-	echo 'Good evening'
+	echo 'Good Evening'
 else
-	echo 'Good night'
+	echo 'Good Night'
 fi
