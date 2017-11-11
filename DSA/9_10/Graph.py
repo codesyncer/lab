@@ -16,6 +16,9 @@ class Graph:
             self.visited = True
             self.predecessor = from_node
 
+        def __str__(self):
+            return self.label
+
     def __init__(self, n_vertices, edge_list, directed=False, simple=True):
         self.n_vertices = n_vertices
         self.edge_list = edge_list
@@ -43,11 +46,10 @@ class Graph:
     def make_adjacency_list(self):
         adjacency_list = [[] for _ in range(self.n_vertices)]
         for u, v in self.edge_list:
-            if u < self.n_vertices or v < self.n_vertices:
-                if self.simple or v not in self.vertices[u]:
-                    adjacency_list[u].append(v)
-                    if not self.directed:
-                        adjacency_list[v].append(u)
+            if self.simple or v not in self.vertices[u]:
+                adjacency_list[u].append(v)
+                if not self.directed:
+                    adjacency_list[v].append(u)
         self.adjacency_list = adjacency_list
         return self.vertices
 
@@ -119,22 +121,16 @@ class Graph:
                     adjacent_vertex.visit(vertex)
                     my_queue.put(adjacent_vertex)
                 else:
-                    if self.vertices[label] == vertex.predecessor:
-                        continue
-                    v1 = self.vertices[label]
-                    v2 = vertex
+                    tmp = vertex
                     cycle = []
-                    if self.vertices[label].distance != vertex.distance:
-                        v1 = v1.predecessor
-                        cycle.append(label)
-                    while v1 != v2:
-                        cycle.insert(0, v1.label)
-                        cycle.append(v2.label)
-                        # if v1.label in graph[v2.label]:
-                        #     cycles.append(cycle)
-                        v1 = v1.predecessor
-                        v2 = v2.predecessor
-                    cycle.append(v1.label)
+                    while tmp is not None and tmp.label != label:
+                        cycle.insert(0, tmp.label)
+                        tmp = tmp.predecessor
+                    if tmp is None:
+                        continue
+                    cycle.insert(0, tmp.label)
+                    8
+                    cycle.insert(0, vertex.label)
                     cycles.append(cycle)
         return cycles
 
