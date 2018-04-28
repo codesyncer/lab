@@ -129,7 +129,6 @@ class Graph:
                     if tmp is None:
                         continue
                     cycle.insert(0, tmp.label)
-                    8
                     cycle.insert(0, vertex.label)
                     cycles.append(cycle)
         return cycles

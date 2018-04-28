@@ -119,6 +119,7 @@ class BinarySearchTree:
         hr = 0 if node.right is None else self.h(node.right)
         return 1 + max(hl, hr)
 
+
 bst = BinarySearchTree()
 # bst.insert(20)
 # bst.insert(10)

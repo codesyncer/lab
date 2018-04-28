@@ -17,8 +17,11 @@ class TreeNode:
         self.h = max(hl, hr) + 1
         return old_height != self.h
 
-    def is_leaf(self):
+    def leaf(self):
         return self.left is None and self.right is None
+
+    def balanced(self):
+        return -1 <= TreeNode.height(self.left) - TreeNode.height(self.right) <= 1
 
 
 class AVLTree:
@@ -32,44 +35,42 @@ class AVLTree:
             return
         tmp = self.root
         parent = None
-        while tmp is not None:
+        while tmp is not None and tmp.value != value:
             parent = tmp
-            tmp = tmp.left if value <= tmp.value else tmp.right
+            tmp = tmp.left if value < tmp.value else tmp.right
+        if tmp is not None:
+            return
         node.parent = parent
-        if value <= parent.value:
+        if value < parent.value:
             parent.left = node
         else:
             parent.right = node
         x = None
         y = node
         z = node.parent
-        while z is not None:
+        while z is not None and z.balanced():
             z.refresh_height()
-            while z is not None and AVLTree.is_balanced(z):
-                x = y
-                y = z
-                z = z.parent
-                if z is not None:
-                    z.refresh_height()
-            if z is not None:
-                z = self.balance(z, y, x).parent
+            x = y
+            y = z
+            z = z.parent
+        if z is not None:
+            z.refresh_height()
+            self.balance(z, y, x)
 
     def balance(self, z, y, x):
+        if z.value == 7041450 or x.value == 7041450 or y.value == 7041450:
+            pass
         if z.left == y and y.left == x:
-            root = self.rotate_right(z)
-        elif z.left == y and y.right == x:
+            return self.rotate_right(z)
+        if z.left == y and y.right == x:
             self.rotate_left(y)
-            root = self.rotate_right(z)
-        elif z.right == y and y.right == x:
-            root = self.rotate_left(z)
-        else:
+            return self.rotate_right(z)
+        if z.right == y and y.right == x:
+            return self.rotate_left(z)
+        if z.right == y and y.left == x:
             self.rotate_right(y)
-            root = self.rotate_left(z)
-        return root
-
-    @staticmethod
-    def is_balanced(node):
-        return abs(TreeNode.height(node.left) - TreeNode.height(node.right)) <= 1
+            return self.rotate_left(z)
+        print('Why')
 
     def rotate_right(self, z):
         y = z.left
@@ -131,7 +132,7 @@ class AVLTree:
         while i < space:
             print(' ', end='')
             i += 1
-        print(root.value)
+        print((root.value, root.h))
         AVLTree.print1(root.left, space)
 
     def print(self):
@@ -187,7 +188,7 @@ class AVLTree:
     def delete(self, node):
         if node is None:
             return
-        if node.is_leaf():
+        if node.leaf():
             if node.parent is None:
                 self.root = None
             elif node == node.parent.left:
@@ -196,45 +197,57 @@ class AVLTree:
                 node.parent.right = None
             z = node.parent
             while z is not None:
-                z.refresh_height()
-                while z is not None and AVLTree.is_balanced(z):
-                    z = z.parent
-                    if z is not None:
-                        z.refresh_height()
-                if z is not None:
-                    y = z.left if TreeNode.height(z.left) >= TreeNode.height(z.right) else z.right
-                    x = y.left if TreeNode.height(y.left) >= TreeNode.height(y.right) else y.right
-                    z = self.balance(z, y, x).parent
+                if not z.balanced():
+                    y = z.left if TreeNode.height(z.left) > TreeNode.height(z.right) else z.right
+                    x = y.left if TreeNode.height(y.left) > TreeNode.height(y.right) else y.right
+                    z = self.balance(z, y, x)
+                    if z is not None and not z.balanced():
+                        print(z.value)
+                else:
+                    z.refresh_height()
+                z = z.parent if z is not None else None
         else:
             if node.left is None or node.right is None:
                 tmp = node.left if node.right is None else node.right
+                if not tmp.leaf():
+                    print(node.value)
+                    # pass
             else:
-                tmp = AVLTree.predecessor(node)
+                tmp = AVLTree.successor(node)
             node.value = tmp.value
             self.delete(tmp)
 
 
-tree = AVLTree()
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    tree.insert(int(line))
-test_data.close()
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    if tree.search(int(line)) is None:
-        print(':(')
-        break
-else:
-    print('Done')
-test_data.close()
-test_data = open('avg.dat', 'r')
-for line in test_data:
-    node = tree.search(int(line))
-    if node is None:
-        print(':(')
-        break
+def main():
+    tree = AVLTree()
+    test_data = open('avg.dat')
+    for line in test_data:
+        tree.insert(int(line))
+    test_data.close()
+    test_data = open('avg.dat')
+    for line in test_data:
+        if tree.search(int(line)) is None:
+            print(':(')
+            break
     else:
+        print('Done')
+    test_data.close()
+    # tree.print()
+    # node = tree.search(7041450)
+    test_data = open('avg.dat')
+    for line in test_data:
+        if int(line) == 7041569:
+            print('fr')
+        node = tree.search(int(line))
+        if node is None:
+            print(line)
+            # tree.print()
+            break
         tree.delete(node)
-else:
-    print('Done')
-test_data.close()
+    else:
+        print('Done')
+    test_data.close()
+
+
+if __name__ == '__main__':
+    main()

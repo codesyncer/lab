@@ -18,6 +18,7 @@ def main():
         line_c += 1
     file.close()
     print(my_trie.search('the'))
+    print(my_trie.match_prefix('se'))
 
 
 if __name__ == '__main__':

@@ -1,12 +1,13 @@
 class ListNode:
-    def __init__(self, value=None, nxt=None):
-        self.value = value
+    def __init__(self, val=None, nxt=None):
+        self.val = val
         self.next = nxt
 
 
 class MyList:
     def __init__(self):
         self.head = None
+        self.iterable_node = None
 
     @staticmethod
     def insert_after(x, p):
@@ -18,21 +19,32 @@ class MyList:
         return self.head
 
     def ordered_insert(self, x):
-        if self.head is None or x < self.head.value:
+        if self.head is None or x < self.head.val:
             return self.insert_head(x)
         tmp = self.head
-        while tmp.next is not None and tmp.next.value < x:
+        while tmp.next is not None and tmp.next.val < x:
             tmp = tmp.next
         return self.insert_after(x, tmp)
 
     def search(self, x):
         tmp = self.head
-        while tmp is not None and tmp.value != x:
+        while tmp is not None and tmp.val != x:
             tmp = tmp.next
         return tmp
 
     def empty(self):
         return self.head is None
+
+    def __iter__(self):
+        self.iterable_node = self.head
+        return self
+
+    def __next__(self):
+        if self.iterable_node is None:
+            raise StopIteration
+        val = self.iterable_node.val
+        self.iterable_node = self.iterable_node.next
+        return val
 
 
 class Node:
@@ -52,7 +64,7 @@ class NiceTrie:
     def __init__(self):
         self.root = Node()
 
-    def insert(self, string, end_word_position=None):
+    def insert(self, string, row_col=None):
         node = self.root
         for ch in string:
             result = None
@@ -62,11 +74,11 @@ class NiceTrie:
                 result = node.children.search(ch)
             if result is None:
                 result = node.children.ordered_insert(Node(ch))
-            node = result.value
-        if end_word_position is not None:
+            node = result.val
+        if row_col is not None:
             if node.indices is None:
                 node.indices = []
-            node.indices.append((end_word_position[0], end_word_position[1]))
+            node.indices.append((row_col[0], row_col[1] - (len(string) - 1)))
 
     def present(self, string):
         node = self.root
@@ -76,7 +88,7 @@ class NiceTrie:
             list_node = node.children.search(ch)
             if list_node is None:
                 return False
-            node = list_node.value
+            node = list_node.val
         return node.children is None
 
     def search(self, string):
@@ -87,9 +99,5 @@ class NiceTrie:
             list_node = node.children.search(ch)
             if list_node is None:
                 return []
-            node = list_node.value
-        indices = []
-        if node.indices is not None:
-            for pos in node.indices:
-                indices.append((pos[0], pos[1] - (len(string) - 1)))
-        return indices
+            node = list_node.val
+        return node.indices
